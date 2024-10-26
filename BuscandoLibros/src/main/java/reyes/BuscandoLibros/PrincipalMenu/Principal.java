@@ -14,7 +14,7 @@ public class Principal {
     private Scanner sc = new Scanner(System.in);
 
     public void mostrarMenu(){
-        System.out.println(ConsumoApi.obtenerDatos(URL));
+
         var datos = convertirDatos.obtenerDatos(ConsumoApi.obtenerDatos(URL), ListaLibros.class);
         System.out.println(datos);
 
@@ -28,8 +28,10 @@ public class Principal {
 
         System.out.print("Ingrese el libro que desea buscar: ");
         var nombreLibro = sc.next();
-        Optional<DatosLibros> libros = informacionLibros.stream().filter(e -> e.tituloLibro().toUpperCase()
-                .contains(nombreLibro.toUpperCase())).findAny();
+        var busquedaLibro = convertirDatos.obtenerDatos(ConsumoApi.obtenerDatos(URL + "?search="+nombreLibro), ListaLibros.class);
+
+        Optional<DatosLibros> libros = busquedaLibro.libros().stream().filter(e -> e.tituloLibro().toUpperCase()
+                .contains(nombreLibro.toUpperCase())).findFirst();
         if(libros.isPresent()){
             System.out.println(libros);
         }
